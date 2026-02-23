@@ -19,3 +19,15 @@ A SimPy based simulation that simulates network RTTs, packet loss, and jitter fo
 
 ```bash
 pip install simpy numpy matplotlib
+```
+
+## Running the Simulation
+
+To run the simulation on a Mac (or any system with Python 3 installed):
+
+1. Open a terminal and navigate to the folder containing `leovfiber_sim.py`.
+2. Execute the simulation with:
+
+```bash
+python3 ./leovfiber_sim.py
+```
