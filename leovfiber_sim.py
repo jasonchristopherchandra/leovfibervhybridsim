@@ -218,22 +218,29 @@ plot.grid(axis="y", linestyle="--", alpha=0.6)
 plot.tight_layout()
 plot.show()
 
+#Split CDF Graph
+architectures = ["Fiber", "LEO", "Hybrid"]
+fig, axes = plot.subplots(1, 3, figsize=(18, 5), sharey=True) 
 
-# CDF graph
-plot.figure(figsize=(12,6))
-for (scenario, user), rtts in RESULTS.items():
-    if rtts:
-        sorted_rtts = np.sort(rtts)
-        cdf = np.arange(1, len(sorted_rtts)+1) / len(sorted_rtts)
-        plot.plot(sorted_rtts, cdf, label=f"{scenario} – {user}")
+for idx, arch in enumerate(architectures):
+    ax = axes[idx]
+    for (scenario, user), rtts in RESULTS.items():
+        scenario_arch = scenario.split()[0]
+        if rtts and scenario_arch == arch:
+            sorted_rtts = np.sort(rtts)
+            cdf = np.arange(1, len(sorted_rtts)+1) / len(sorted_rtts)
+            ax.plot(sorted_rtts, cdf, label=f"{scenario} – {user}")
+    
+    ax.set_xlabel("RTT (ms)")
+    ax.set_title(f"{arch} Architecture")
+    ax.grid(True, linestyle="--", alpha=0.5)
+    ax.legend(fontsize=8)
 
-plot.xlabel("RTT (ms)")
-plot.ylabel("CDF")
-plot.title("CDF of RTT Across Scenarios")
-plot.grid(True, linestyle="--", alpha=0.5)
-plot.legend(fontsize=8)
-plot.tight_layout()
+axes[0].set_ylabel("CDF")
+fig.suptitle("CDF of RTT by Architecture", fontsize=14)
+plot.tight_layout(rect=[0, 0, 1, 0.95])
 plot.show()
+
 
 # Packet Loss graph
 loss_percentages = []
